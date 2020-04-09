@@ -1,0 +1,289 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020 吴汶泽 <wenzewoo@gmail.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.github.wenzewoo.jetbrains.plugin.mis.config
+
+import com.github.wenzewoo.jetbrains.plugin.mis.design.MISConfigurationInterfaceForm
+import com.github.wenzewoo.jetbrains.plugin.mis.filestore.MISFileStoreFactory
+import com.github.wenzewoo.jetbrains.plugin.mis.toolkit.Consts
+import com.intellij.openapi.options.Configurable
+import com.intellij.openapi.options.SearchableConfigurable
+import com.intellij.openapi.ui.Messages
+import javax.swing.JComponent
+
+class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, Configurable.NoScroll {
+    override fun getId(): String {
+        return this.displayName
+    }
+
+    override fun getDisplayName(): String {
+        return "Markdown Image Support"
+    }
+
+    private fun initialization() {
+        this.initializationComponentsValue()
+        this.initializationComponentsListener()
+    }
+
+    private fun initializationComponentsValue() {
+        MISConfigService.getInstance().state?.let {
+            // local
+            this.checkLocalFileEnable.isSelected = it.localFileEnabled
+            this.comboLocalFileSavePathTemplate.selectedItem = it.localFileSavePathTemplate
+            this.textLocalFileSavePathCustomText.text = it.localFileSavePathCustomText
+            this.comboLocalFileNewFilenameTemplate.selectedItem = it.localFileNewFilenameTemplate
+            this.textLocalFileNewFilenameCustomText.text = it.localFileNewFilenameCustomText
+            this.sliderLocalFileImageQuality.value = it.localFileImageQuality
+
+            // qiniu
+            this.checkQiniuEnable.isSelected = it.qiniuEnabled
+            this.textQiniuBucket.text = it.qiniuBucket
+            this.textQiniuAccessKey.text = it.qiniuAccessKey
+            this.textQiniuSecretKey.text = it.qiniuSecretKey
+            this.textQiniuDomain.text = it.qiniuDomain
+            this.comboQiniuNewFilenameTemplate.selectedItem = it.qiniuNewFilenameTemplate
+            this.textQiniuNewFilenameCustomText.text = it.qiniuNewFilenameCustomText
+            this.textQiniuStyleSuffix.text = it.qiniuStyleSuffix
+            this.selectRadioWithQiniuBucketZone(it.qiniuBucketZone)
+        }
+    }
+
+    private fun initializationComponentsListener() {
+        this.initializationComponentsListenerWithLocal()
+        this.initializationComponentsListenerWithQiniu()
+    }
+
+    private fun initializationComponentsListenerWithQiniu() {
+        for (i in this.radioQiniuBucketZones.indices) {
+            this.radioQiniuBucketZones[i].addActionListener {
+                this.selectRadioWithQiniuBucketZone(i)
+            }
+        }
+
+        // newFileName 联动效果
+        this.textQiniuNewFilenameCustomText.isVisible =
+            this.comboQiniuNewFilenameTemplate.selectedItem?.toString() == Consts.CustomFlag
+        this.comboQiniuNewFilenameTemplate.addItemListener {
+            this.textQiniuNewFilenameCustomText.isVisible = it.item.toString() == Consts.CustomFlag
+            if (this.textQiniuNewFilenameCustomText.isVisible) {
+                this.textQiniuNewFilenameCustomText.requestFocus()
+            }
+        }
+
+        // checkQiniuEnable & components 联动效果
+        val components: Array<JComponent> = arrayOf(
+            this.textQiniuBucket,
+            this.textQiniuAccessKey,
+            this.textQiniuSecretKey,
+            this.textQiniuDomain,
+            this.comboQiniuNewFilenameTemplate,
+            this.textQiniuNewFilenameCustomText,
+            this.textQiniuStyleSuffix,
+            this.radioQiniuBucketZoneEastChina,
+            this.radioQiniuBucketZoneNorthAmerica,
+            this.radioQiniuBucketZoneNorthChina,
+            this.radioQiniuBucketZoneSouthChina,
+            this.radioQiniuBucketZoneSoutheastAsia,
+            this.buttonTestQiniu
+        )
+        this.batchSetComponentEnabled(this.checkQiniuEnable.isSelected, *components)
+        this.checkQiniuEnable.addActionListener {
+            MISConfigService.getInstance().state?.let { state ->
+                state.qiniuEnabled = this.checkQiniuEnable.isSelected
+            }
+            this.batchSetComponentEnabled(this.checkQiniuEnable.isSelected, *components)
+        }
+
+        this.buttonTestQiniu.addActionListener {
+            // save config
+            this.apply()
+
+            // test connection
+            val message = if (MISFileStoreFactory.of(Consts.FileStoreQiniu).test()) {
+                "Successful."
+            } else {
+                "Upload fail, Please check the configuration."
+            }
+            Messages.showInfoMessage(message, "Test Result")
+        }
+    }
+
+    private fun selectRadioWithQiniuBucketZone(index: Int) {
+        if (index in 0..4) {
+            MISConfigService.getInstance().state?.let {
+                it.qiniuBucketZone = index
+                this.radioQiniuBucketZones[index].isSelected = true
+                for (i in this.radioQiniuBucketZones.indices) {
+                    if (i != index) {
+                        this.radioQiniuBucketZones[i].isSelected = false
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initializationComponentsListenerWithLocal() {
+        // savePath & newFileName 联动效果
+        this.textLocalFileSavePathCustomText.isVisible =
+            this.comboLocalFileSavePathTemplate.selectedItem?.toString() == Consts.CustomFlag
+        this.textLocalFileNewFilenameCustomText.isVisible =
+            this.comboLocalFileNewFilenameTemplate.selectedItem?.toString() == Consts.CustomFlag
+        this.comboLocalFileSavePathTemplate.addItemListener {
+            this.textLocalFileSavePathCustomText.isVisible = it.item.toString() == Consts.CustomFlag
+            if (this.textLocalFileSavePathCustomText.isVisible) {
+                this.textLocalFileSavePathCustomText.requestFocus()
+            }
+        }
+        this.comboLocalFileNewFilenameTemplate.addItemListener {
+            this.textLocalFileNewFilenameCustomText.isVisible = it.item.toString() == Consts.CustomFlag
+            if (this.textLocalFileNewFilenameCustomText.isVisible) {
+                this.textLocalFileNewFilenameCustomText.requestFocus()
+            }
+        }
+
+        // checkLocalEnable & components 联动效果
+        val components: Array<JComponent> = arrayOf(
+            this.comboLocalFileSavePathTemplate,
+            this.textLocalFileSavePathCustomText,
+            this.comboLocalFileNewFilenameTemplate,
+            this.textLocalFileNewFilenameCustomText,
+            this.sliderLocalFileImageQuality
+        )
+        this.batchSetComponentEnabled(this.checkLocalFileEnable.isSelected, *components)
+        this.checkLocalFileEnable.addActionListener {
+            MISConfigService.getInstance().state?.let { state ->
+                state.localFileEnabled = this.checkLocalFileEnable.isSelected
+            }
+            this.batchSetComponentEnabled(this.checkLocalFileEnable.isSelected, *components)
+        }
+
+        // sliderCompression & labelCompressionText 联动效果
+        this.labelLocalFileImageQuality.text = "${this.sliderLocalFileImageQuality.value}%"
+        this.sliderLocalFileImageQuality.addChangeListener {
+            this.labelLocalFileImageQuality.text = "${this.sliderLocalFileImageQuality.value}%"
+        }
+    }
+
+    private fun batchSetComponentEnabled(isEnabled: Boolean, vararg components: JComponent) {
+        components.forEach { it.isEnabled = isEnabled }
+    }
+
+    override fun createComponent(): JComponent? {
+        this.initialization();
+        return this.rootPanel
+    }
+
+    override fun isModified(): Boolean {
+        val state = MISConfigService.getInstance().state!!
+        return this.isModifiedWithLocal(state) || this.isModifiedWithQiniu(state)
+    }
+
+    private fun isModifiedWithQiniu(state: MISConfig): Boolean {
+        return this.batchNotEqualsWithAny(
+            arrayOf(
+                state.qiniuEnabled,
+                state.qiniuBucket,
+                state.qiniuAccessKey,
+                state.qiniuSecretKey,
+                state.qiniuDomain,
+                state.qiniuNewFilenameTemplate,
+                state.qiniuNewFilenameCustomText,
+                state.qiniuStyleSuffix
+            ),
+            arrayOf(
+                this.checkQiniuEnable.isSelected,
+                this.textQiniuBucket.text,
+                this.textQiniuAccessKey.text,
+                this.textQiniuSecretKey.text,
+                this.textQiniuDomain.text,
+                this.comboQiniuNewFilenameTemplate.selectedItem,
+                this.textQiniuNewFilenameCustomText.text,
+                this.textQiniuStyleSuffix.text
+            )
+        )
+    }
+
+    private fun isModifiedWithLocal(state: MISConfig): Boolean {
+        return this.batchNotEqualsWithAny(
+            arrayOf(
+                state.localFileEnabled,
+                state.localFileSavePathTemplate,
+                state.localFileSavePathCustomText,
+                state.localFileNewFilenameTemplate,
+                state.localFileNewFilenameCustomText,
+                state.localFileImageQuality
+            ),
+            arrayOf(
+                this.checkLocalFileEnable.isSelected,
+                this.comboLocalFileSavePathTemplate.selectedItem,
+                this.textLocalFileSavePathCustomText.text,
+                this.comboLocalFileNewFilenameTemplate.selectedItem,
+                this.textLocalFileNewFilenameCustomText.text,
+                this.sliderLocalFileImageQuality.value
+            )
+        )
+    }
+
+    private fun batchNotEqualsWithAny(items1: Array<Any?>, items2: Array<Any?>): Boolean {
+        if (items1.size != items2.size) {
+            return true
+        }
+
+        for ((index, item) in items1.withIndex()) {
+            if (item != items2[index]) {
+                return true
+            }
+        }
+        return false
+    }
+
+    override fun apply() {
+        MISConfigService.getInstance().state?.let {
+
+            // save local
+            it.localFileEnabled = this.checkLocalFileEnable.isEnabled
+            it.localFileSavePathTemplate = this.comboLocalFileSavePathTemplate.selectedItem?.toString()!!
+            it.localFileSavePathCustomText = this.textLocalFileSavePathCustomText.text
+            it.localFileNewFilenameTemplate = this.comboLocalFileNewFilenameTemplate.selectedItem?.toString()!!
+            it.localFileNewFilenameCustomText = this.textLocalFileNewFilenameCustomText.text
+            it.localFileImageQuality = this.sliderLocalFileImageQuality.value
+
+
+            // save qiniu
+            it.qiniuEnabled = this.checkQiniuEnable.isEnabled
+            it.qiniuBucket = this.textQiniuBucket.text
+            it.qiniuAccessKey = this.textQiniuAccessKey.text
+            it.qiniuSecretKey = this.textQiniuSecretKey.text
+            it.qiniuDomain = this.textQiniuDomain.text
+            it.qiniuNewFilenameTemplate = this.comboQiniuNewFilenameTemplate.selectedItem?.toString()!!
+            it.qiniuNewFilenameCustomText = this.textQiniuNewFilenameCustomText.text
+            it.qiniuStyleSuffix = this.textQiniuStyleSuffix.text
+
+            it.validMessage()?.let { message ->
+                Messages.showErrorDialog(message, "Save Error");
+            }
+        }
+    }
+
+}

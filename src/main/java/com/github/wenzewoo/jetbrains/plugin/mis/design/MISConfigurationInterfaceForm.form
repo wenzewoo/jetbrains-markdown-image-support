@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.github.wenzewoo.jetbrains.plugin.mis.design.MISConfigurationInterfaceForm">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="973" height="565"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="45d60" binding="tabPanel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="11b4b" layout-manager="GridLayoutManager" row-count="10" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="1" vgap="1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Local"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="4fb7c" class="javax.swing.JCheckBox" binding="checkLocalFileEnable">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <selected value="true"/>
+                  <text value="Enable?"/>
+                </properties>
+              </component>
+              <hspacer id="7a1d9">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="b9e8b" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Save path"/>
+                </properties>
+              </component>
+              <component id="acd8b" class="javax.swing.JComboBox" binding="comboLocalFileSavePathTemplate">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model>
+                    <item value="./assets/"/>
+                    <item value="./assets/${yyyyMMdd}/"/>
+                    <item value="./assets/${MDFile}/"/>
+                    <item value="./${MDFile}/"/>
+                    <item value="./${MDFile}.assets/"/>
+                    <item value="Custom.."/>
+                  </model>
+                </properties>
+              </component>
+              <component id="d2107" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="New fileame"/>
+                </properties>
+              </component>
+              <component id="f63f5" class="javax.swing.JComboBox" binding="comboLocalFileNewFilenameTemplate">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model>
+                    <item value="${MDFile}-${Timestamp}.${Suffix}"/>
+                    <item value="${MDFile}-${UUID}.${Suffix}"/>
+                    <item value="${Timestamp}.${Suffix}"/>
+                    <item value="${UUID}.${Suffix}"/>
+                    <item value="Custom.."/>
+                  </model>
+                </properties>
+              </component>
+              <hspacer id="85f83">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="15"/>
+                  </grid>
+                </constraints>
+              </hspacer>
+              <component id="e4877" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;&#10;&lt;b&gt;Variable&lt;/b&gt;： &lt;br/&gt; &#10;- &lt;code&gt;${MDFile}&lt;/code&gt;: Current markdown file name, such as &quot;example&quot; &lt;br/&gt;&#10;- &lt;code&gt;${Suffix}&lt;/code&gt;: Current image file suffix, such as &quot;png&quot; &lt;br/&gt;&#10;- &lt;code&gt;${yyyyMMdd}&lt;/code&gt;: Current date, such as &quot;20200401&quot;  &lt;br/&gt;&#10;- &lt;code&gt;${Timestamp}&lt;/code&gt;: Current time stamp, such as &quot;1585819668627&quot;  &lt;br/&gt;&#10;- &lt;code&gt;${UUID}&lt;/code&gt;: Random 32-bit string, such as &quot;67b52ab3e50643e08b8cb980c2ecdaed&quot; &lt;br/&gt;&#10;&lt;/html&gt;" noi18n="true"/>
+                </properties>
+              </component>
+              <component id="d437d" class="javax.swing.JTextField" binding="textLocalFileSavePathCustomText">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="d0f52" class="javax.swing.JTextField" binding="textLocalFileNewFilenameCustomText">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <grid id="3b825" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <component id="e93f3" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Image quality"/>
+                </properties>
+              </component>
+              <component id="59191" class="javax.swing.JSlider" binding="sliderLocalFileImageQuality">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="5b847" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="The larger the value, the smaller the compression ratio."/>
+                </properties>
+              </component>
+              <component id="7b6de" class="javax.swing.JLabel" binding="labelLocalFileImageQuality">
+                <constraints>
+                  <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="51" height="16"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="20%"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="727a4" layout-manager="GridLayoutManager" row-count="13" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Qiniu"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="f0656" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Bucket"/>
+                </properties>
+              </component>
+              <component id="cb421" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Access Key"/>
+                </properties>
+              </component>
+              <component id="2d166" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Secret Key"/>
+                </properties>
+              </component>
+              <component id="e3e47" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Domain"/>
+                </properties>
+              </component>
+              <component id="74e9e" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Style suffix"/>
+                </properties>
+              </component>
+              <component id="6a7df" class="javax.swing.JCheckBox" binding="checkQiniuEnable">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <enabled value="true"/>
+                  <selected value="false"/>
+                  <text value="Enable?"/>
+                </properties>
+              </component>
+              <component id="2d3eb" class="javax.swing.JTextField" binding="textQiniuBucket">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="1a9fa" class="javax.swing.JTextField" binding="textQiniuAccessKey">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="7e5e7" class="javax.swing.JTextField" binding="textQiniuSecretKey">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="d3768" class="javax.swing.JTextField" binding="textQiniuDomain">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="1c502" class="javax.swing.JTextField" binding="textQiniuStyleSuffix">
+                <constraints>
+                  <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="1cb13" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="New fileame"/>
+                </properties>
+              </component>
+              <component id="8ea33" class="javax.swing.JComboBox" binding="comboQiniuNewFilenameTemplate">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model>
+                    <item value="images/${MDFile}/${Timestamp}.${Suffix}"/>
+                    <item value="images/${yyyyMMdd}/${UUID}.${Suffix}"/>
+                    <item value="${MDFile}-${Timestamp}.${Suffix}"/>
+                    <item value="${yyyyMMdd}-${UUID}.${Suffix}"/>
+                    <item value="${UUID}.${Suffix}"/>
+                    <item value="${Timestamp}.${Suffix}"/>
+                    <item value="Custom.."/>
+                  </model>
+                </properties>
+              </component>
+              <component id="3a288" class="javax.swing.JTextField" binding="textQiniuNewFilenameCustomText">
+                <constraints>
+                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="1f1de" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;&#10;&lt;b&gt;Variable&lt;/b&gt;： &lt;br/&gt; &#10;- &lt;code&gt;${MDFile}&lt;/code&gt;: Current markdown file name, such as &quot;example&quot; &lt;br/&gt;&#10;- &lt;code&gt;${Suffix}&lt;/code&gt;: Current image file suffix, such as &quot;png&quot; &lt;br/&gt;&#10;- &lt;code&gt;${yyyyMMdd}&lt;/code&gt;: Current date, such as &quot;20200401&quot;  &lt;br/&gt;&#10;- &lt;code&gt;${Timestamp}&lt;/code&gt;: Current time stamp, such as &quot;1585819668627&quot;  &lt;br/&gt;&#10;- &lt;code&gt;${UUID}&lt;/code&gt;: Random 32-bit string, such as &quot;67b52ab3e50643e08b8cb980c2ecdaed&quot; &lt;br/&gt;&#10;&lt;/html&gt;" noi18n="true"/>
+                </properties>
+              </component>
+              <component id="4bb1e" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Bucket zone"/>
+                </properties>
+              </component>
+              <grid id="e05bf" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="43ee6" class="javax.swing.JRadioButton" binding="radioQiniuBucketZoneEastChina">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <selected value="true"/>
+                      <text value="EastChina"/>
+                    </properties>
+                  </component>
+                  <hspacer id="26398">
+                    <constraints>
+                      <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                  <component id="f9cae" class="javax.swing.JRadioButton" binding="radioQiniuBucketZoneNorthChina">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="NorthChina"/>
+                    </properties>
+                  </component>
+                  <component id="60fe5" class="javax.swing.JRadioButton" binding="radioQiniuBucketZoneSouthChina">
+                    <constraints>
+                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="SouthChina"/>
+                    </properties>
+                  </component>
+                  <component id="17272" class="javax.swing.JRadioButton" binding="radioQiniuBucketZoneNorthAmerica">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="NorthAmerica"/>
+                    </properties>
+                  </component>
+                  <component id="c9b6f" class="javax.swing.JRadioButton" binding="radioQiniuBucketZoneSoutheastAsia">
+                    <constraints>
+                      <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="SoutheastAsia"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="933b4" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;&#10;If you need to, you can create a picture style or transcode style, and fill it in here. &lt;br/&gt;&#10;&lt;b&gt;Reference website:&lt;/b&gt;&#10;&lt;a href=&quot;https://portal.qiniu.com/kodo/bucket/image-style&quot;&gt;https://portal.qiniu.com/kodo/bucket/image-style&lt;a/&gt;&#10;&lt;html&gt;"/>
+                </properties>
+              </component>
+              <hspacer id="70dc0">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="15"/>
+                  </grid>
+                </constraints>
+              </hspacer>
+              <component id="14520" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="51" height="16"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <grid id="c94c4" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="b9790" class="javax.swing.JButton" binding="buttonTestQiniu">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Test"/>
+                    </properties>
+                  </component>
+                  <hspacer id="d34c">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="aa841" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="AliyunOSS"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="27488" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Not yet realized."/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="eec08" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="TencentOSS"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="326f4" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Not yet realized."/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="9e260" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Custom API"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="26249" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Not yet realized."/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>
