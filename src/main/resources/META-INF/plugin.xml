@@ -40,7 +40,7 @@
             <ul>
                 <li>Multiple storage support, such as local / qiniu / aliyun OSS / tencent OSS, etc.</li>
                 <li>Customize the file name naming policy and provide a variety of preset schemes.</li>
-                <li>Provide picture compression function. Before uploading files, compress pictures according to the set compression rate to save traffic.</li>
+                <li>Provide picture compression function, compress pictures according to the set compression rate.</li>
                 <li>Directly from the paste image to the editor, automatically upload the image and convert it to the markdown tag.</li>
                 <li>Directly copy one or more picture files to the editor, automatically upload the pictures and convert them to markdown tags.</li>
                 <li>Through the ALT + enter shortcut key, the image can be deleted intelligently. When the markdown tag is deleted, the source file in the corresponding storage can be removed.</li>
@@ -53,7 +53,7 @@
             <ul>
                 <li>多种存储支持，如本地/七牛/阿里云OSS/腾讯OSS等。</li>
                 <li>自定义文件名命名策略，并提供多种预设方案。</li>
-                <li>提供图片压缩功能，上传文件前，按照设置的压缩率压缩图片，节省流量。</li>
+                <li>提供图片压缩功能，按照设置的压缩率压缩图片。</li>
                 <li>直接从粘贴图片到编辑器，自动上传图片并转换为Markdown标签。</li>
                 <li>直接复制一个或者多个图片文件到编辑器，自动上传图片并转换为Markdown标签。</li>
                 <li>通过Alt+Enter快捷键，智能删除图片，删除Markdown标记的同时，移除对应存储中的源文件。</li>
@@ -66,7 +66,16 @@
 ]]></description>
 
     <change-notes><![CDATA[
-        <p>0.0.1-RELEASE：2020/04/09</p>
+        <p>1.1-SNAPSHOT：2020/04/10</p>
+        <ul>
+            <li>Support new version IDEA v2020.1</li>
+        </ul>
+        <ul>
+            <li>支持新版IDEA v2020.1</li>
+        </ul>
+        <hr/>
+
+        <p>1.0-SNAPSHOT：2020/04/09</p>
         <ul>
             <li>First version release</li>
         </ul>

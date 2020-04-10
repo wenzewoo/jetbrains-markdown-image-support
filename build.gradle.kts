@@ -29,7 +29,7 @@ plugins {
 }
 
 group = "com.github.wenzewoo.jetbrains.plugin"
-version = "1.0-SNAPSHOT"
+version = "1.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -43,7 +43,8 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "2019.3.1"
+    version = "IC-2018.3"
+    updateSinceUntilBuild = false
 }
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
