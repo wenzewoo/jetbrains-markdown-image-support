@@ -66,6 +66,15 @@
 ]]></description>
 
     <change-notes><![CDATA[
+        <p>1.2-SNAPSHOT：2020/04/14</p>
+        <ul>
+            <li>Fix null pointer exception</li>
+        </ul>
+        <ul>
+            <li>修复空指针异常</li>
+        </ul>
+        <hr/>
+
         <p>1.1-SNAPSHOT：2020/04/10</p>
         <ul>
             <li>Support new version IDEA v2020.1</li>
