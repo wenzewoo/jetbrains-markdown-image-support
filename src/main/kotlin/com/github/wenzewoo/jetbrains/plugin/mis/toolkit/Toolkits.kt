@@ -117,7 +117,7 @@ object Toolkits {
     }
 
     fun isMarkdownFile(editor: Editor?): Boolean {
-        if (null = editor) {
+        if (null == editor) {
             return false
         }
         return (editor is EditorEx && editor.virtualFile.fileType.name.toLowerCase() == "markdown")
