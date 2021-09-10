@@ -22,88 +22,27 @@
  * SOFTWARE.
  */
 
-package com.github.wenzewoo.jetbrains.plugin.mis.filestore
+package com.github.wenzewoo.jetbrains.plugin.mis.filestore.impl
 
 import com.github.wenzewoo.jetbrains.plugin.mis.config.MISConfigService
-import com.github.wenzewoo.jetbrains.plugin.mis.entity.ImageWrapper
 import com.qiniu.common.Zone
 import com.qiniu.storage.BucketManager
 import com.qiniu.storage.Configuration
 import com.qiniu.storage.UploadManager
 import com.qiniu.util.Auth
-import com.qiniu.util.IOUtils
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
-import javax.imageio.ImageIO
 
 
-class MISQiniuFileStore : MISFileStore {
-    private val testFileName = "favicon.png"
+class MISQiniuFileStore : MISAbstractOSSFileStore() {
     private val state = MISConfigService.getInstance().state!!
-
-    override fun test(): Boolean {
-        val inputStream: InputStream = this.javaClass.getResourceAsStream("/${testFileName}")
-        val testFileKey = "MarkdownImageSupportTest-${System.currentTimeMillis()}-${testFileName}"
-        return this.upload(IOUtils.toByteArray(inputStream), testFileKey, true)
-    }
-
-    override fun write(imageWrapper: ImageWrapper, saveAs: String): String {
-        return try {
-            val saveAsSuffix = saveAs.substring(saveAs.lastIndexOf(".") + 1)
-            val byteArray: ByteArray = if (null != imageWrapper.imageFile) {
-                // Read pictures bytes
-                FileInputStream(imageWrapper.imageFile!!).readBytes()
-            } else {
-                // Generate pictures
-                val out = ByteArrayOutputStream()
-                ImageIO.write(imageWrapper.image, saveAsSuffix, out)
-                out.toByteArray()
-            }
-            if (this.upload(byteArray, saveAs, false)) {
-                return this.buildPreviewUrl(saveAs)
-            }
-            "Upload to qiniu error"
-        } catch (e: Throwable) {
-            "Upload to qiniu error:${e.message}"
-        }
-    }
 
     override fun delete(localFile: File?, markdownUrl: String): Boolean {
         var fileKey = markdownUrl.replace(state.qiniuDomain, "").replace(state.qiniuStyleSuffix ?: "", "")
         if (fileKey.startsWith("/")) {
             fileKey = fileKey.substring(1)
         }
-        return this.delete(fileKey)
-    }
-
-    private fun upload(byteArray: ByteArray, fileKey: String, check: Boolean): Boolean {
-        return try {
-            val cfg = Configuration(getZone())
-            val uploadManager = UploadManager(cfg)
-            val auth = Auth.create(state.qiniuAccessKey, state.qiniuSecretKey)
-            val upToken = auth.uploadToken(state.qiniuBucket)
-            val response = uploadManager.put(
-                byteArray, fileKey, upToken
-            )
-            if (response.isOK && null != response.jsonToMap()["key"]) {
-                if (check) {
-                    val url = URL(this.buildPreviewUrl(fileKey))
-                    val conn = url.openConnection() as HttpURLConnection
-                    return conn.responseCode == 200 || conn.responseCode == 304
-                }
-                return true
-            }
-            false
-        } catch (e: Throwable) {
-            false
-        }
-    }
-
-    private fun delete(fileKey: String): Boolean {
         return try {
             val cfg = Configuration(getZone())
             val auth = Auth.create(state.qiniuAccessKey, state.qiniuSecretKey)
@@ -115,13 +54,31 @@ class MISQiniuFileStore : MISFileStore {
         }
     }
 
-    private fun buildPreviewUrl(fileKey: String): String {
-        return "${state.qiniuDomain}${
-        if (!state.qiniuDomain.endsWith("/")) {
-            "/"
-        } else {
-            ""
-        }}${fileKey}${state.qiniuStyleSuffix}"
+    override fun upload(byteArray: ByteArray, fileKey: String, check: Boolean): Boolean {
+        return try {
+            val cfg = Configuration(getZone())
+            val uploadManager = UploadManager(cfg)
+            val auth = Auth.create(state.qiniuAccessKey, state.qiniuSecretKey)
+            val upToken = auth.uploadToken(state.qiniuBucket)
+            val response = uploadManager.put(
+                byteArray, fileKey, upToken
+            )
+            if (response.isOK && null != response.jsonToMap()["key"]) {
+                if (check) {
+                    val url = URL(this.previewUrl(fileKey, false))
+                    val conn = url.openConnection() as HttpURLConnection
+                    return conn.responseCode == 200 || conn.responseCode == 304
+                }
+                return true
+            }
+            false
+        } catch (e: Throwable) {
+            false
+        }
+    }
+
+    override fun previewUrl(fileKey: String, styleSuffix: Boolean): String {
+        return "${state.qiniuDomain}${if (!state.qiniuDomain.endsWith("/")) "/" else ""}${fileKey}${if (styleSuffix) state.qiniuStyleSuffix else ""}"
     }
 
     private fun getZone(): Zone {

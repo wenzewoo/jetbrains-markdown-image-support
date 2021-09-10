@@ -29,7 +29,7 @@ plugins {
 }
 
 group = "com.github.wenzewoo.jetbrains.plugin"
-version = "1.2-SNAPSHOT"
+version = "1.3-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -39,11 +39,12 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     compile("net.coobird", "thumbnailator", "0.4.8")
     compile("com.qiniu", "qiniu-java-sdk", "7.2.28")
+    compile("com.aliyun.oss", "aliyun-sdk-oss", "3.13.0")
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "IC-2018.3"
+    version = "IC-2019.3"
     updateSinceUntilBuild = false
 }
 configure<JavaPluginConvention> {

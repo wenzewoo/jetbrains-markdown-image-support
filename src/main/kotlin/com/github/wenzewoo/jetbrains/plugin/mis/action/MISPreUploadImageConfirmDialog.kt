@@ -48,6 +48,7 @@ class MISPreUploadImageConfirmDialog(
 
     init {
         this.isModal = true
+        this.isUndecorated = true
         this.contentPane = this.dialogPanel
         this.rootPane.defaultButton = this.buttonOk
         this.defaultCloseOperation = WindowConstants.DO_NOTHING_ON_CLOSE
@@ -77,6 +78,9 @@ class MISPreUploadImageConfirmDialog(
             if (it.qiniuEnabled) {
                 this.comboUploadTo.addItem(Consts.FileStoreQiniu)
             }
+            if (it.aliyunEnabled) {
+                this.comboUploadTo.addItem(Consts.FileStoreAliyunOSS)
+            }
             this.comboUploadTo.selectedItem = it.currentUploadTo
         }
 
@@ -98,7 +102,7 @@ class MISPreUploadImageConfirmDialog(
 
         this.textMarkdownTitle.text = this.imageFile?.name ?: ""
         this.isResizable = false
-        this.title = "Upload Image: ${this.imageFile?.name ?: "with Clipboard"}"
+        this.labelTitle.text = this.imageFile?.name ?: "with Clipboard"
         this.pack()
         this.setLocationRelativeTo(null)
         this.isVisible = true
@@ -106,29 +110,38 @@ class MISPreUploadImageConfirmDialog(
 
     private fun setSaveAsValueWithUploadToAndImageType() {
         MISConfigService.getInstance().state?.let {
-            val uploadTo = this.comboUploadTo.selectedItem?.toString()!!
 
             // init local
-            if (uploadTo == Consts.FileStoreLocal) {
-                val path = if (it.localFileSavePathTemplate != Consts.CustomFlag) {
-                    this.replaceVariable(it.localFileSavePathTemplate)
-                } else {
-                    this.replaceVariable(it.localFileSavePathCustomText)
-                }
+            when (this.comboUploadTo.selectedItem?.toString()!!) {
+                Consts.FileStoreLocal -> {
+                    val path = if (it.localFileSavePathTemplate != Consts.CustomFlag) {
+                        this.replaceVariable(it.localFileSavePathTemplate)
+                    } else {
+                        this.replaceVariable(it.localFileSavePathCustomText)
+                    }
 
-                val filename = if (it.localFileNewFilenameTemplate != Consts.CustomFlag) {
-                    this.replaceVariable(it.localFileNewFilenameTemplate)
-                } else {
-                    this.replaceVariable(it.localFileNewFilenameCustomText)
+                    val filename = if (it.localFileNewFilenameTemplate != Consts.CustomFlag) {
+                        this.replaceVariable(it.localFileNewFilenameTemplate)
+                    } else {
+                        this.replaceVariable(it.localFileNewFilenameCustomText)
+                    }
+                    this.textSaveAs.text = "${path}${filename}"
                 }
-                this.textSaveAs.text = "${path}${filename}"
-            }
-            // init qiniu
-            else if (uploadTo == Consts.FileStoreQiniu) {
-                this.textSaveAs.text = if (it.qiniuNewFilenameTemplate != Consts.CustomFlag) {
-                    this.replaceVariable(it.qiniuNewFilenameTemplate)
-                } else {
-                    this.replaceVariable(it.qiniuNewFilenameCustomText)
+                // init qiniu
+                Consts.FileStoreQiniu -> {
+                    this.textSaveAs.text = if (it.qiniuNewFilenameTemplate != Consts.CustomFlag) {
+                        this.replaceVariable(it.qiniuNewFilenameTemplate)
+                    } else {
+                        this.replaceVariable(it.qiniuNewFilenameCustomText)
+                    }
+                }
+                // init aliyun oss
+                Consts.FileStoreAliyunOSS -> {
+                    this.textSaveAs.text = if (it.aliyunNewFilenameTemplate != Consts.CustomFlag) {
+                        this.replaceVariable(it.aliyunNewFilenameTemplate)
+                    } else {
+                        this.replaceVariable(it.aliyunNewFilenameCustomText)
+                    }
                 }
             }
         }

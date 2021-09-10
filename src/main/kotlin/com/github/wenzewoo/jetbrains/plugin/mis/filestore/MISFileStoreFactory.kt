@@ -24,6 +24,9 @@
 
 package com.github.wenzewoo.jetbrains.plugin.mis.filestore
 
+import com.github.wenzewoo.jetbrains.plugin.mis.filestore.impl.MISAliyunOSSFileStore
+import com.github.wenzewoo.jetbrains.plugin.mis.filestore.impl.MISLocalFileStore
+import com.github.wenzewoo.jetbrains.plugin.mis.filestore.impl.MISQiniuFileStore
 import com.github.wenzewoo.jetbrains.plugin.mis.toolkit.Consts
 
 
@@ -38,9 +41,6 @@ object MISFileStoreFactory {
             }
             Consts.FileStoreAliyunOSS -> {
                 MISAliyunOSSFileStore()
-            }
-            Consts.FileStoreTencentOSS -> {
-                MISTencentOSSFileStore()
             }
             else -> MISLocalFileStore()
         }

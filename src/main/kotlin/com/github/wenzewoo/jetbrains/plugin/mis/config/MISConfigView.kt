@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+@file:Suppress("DuplicatedCode")
+
 package com.github.wenzewoo.jetbrains.plugin.mis.config
 
 import com.github.wenzewoo.jetbrains.plugin.mis.design.MISConfigurationInterfaceForm
@@ -46,6 +48,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
         this.initializationComponentsListener()
     }
 
+    @Suppress("DuplicatedCode")
     private fun initializationComponentsValue() {
         MISConfigService.getInstance().state?.let {
             // local
@@ -66,12 +69,24 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
             this.textQiniuNewFilenameCustomText.text = it.qiniuNewFilenameCustomText
             this.textQiniuStyleSuffix.text = it.qiniuStyleSuffix
             this.selectRadioWithQiniuBucketZone(it.qiniuBucketZone)
+
+
+            // aliyun oss
+            this.checkAliyunEnable.isSelected = it.aliyunEnabled
+            this.textAliyunBucket.text = it.aliyunBucket
+            this.textAliyunAccessKey.text = it.aliyunAccessKey
+            this.textAliyunSecretKey.text = it.aliyunSecretKey
+            this.textAliyunEndpoint.text = it.aliyunEndpoint
+            this.comboAliyunNewFilenameTemplate.selectedItem = it.aliyunNewFilenameTemplate
+            this.textAliyunNewFilenameCustomText.text = it.aliyunNewFilenameCustomText
+            this.textAliyunStyleSuffix.text = it.aliyunStyleSuffix
         }
     }
 
     private fun initializationComponentsListener() {
         this.initializationComponentsListenerWithLocal()
         this.initializationComponentsListenerWithQiniu()
+        this.initializationComponentsListenerWithAliyun()
     }
 
     private fun initializationComponentsListenerWithQiniu() {
@@ -121,6 +136,50 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
 
             // test connection
             val message = if (MISFileStoreFactory.of(Consts.FileStoreQiniu).test()) {
+                "Successful."
+            } else {
+                "Upload fail, Please check the configuration."
+            }
+            Messages.showInfoMessage(message, "Test Result")
+        }
+    }
+
+    private fun initializationComponentsListenerWithAliyun() {
+        // newFileName 联动效果
+        this.textAliyunNewFilenameCustomText.isVisible =
+            this.comboAliyunNewFilenameTemplate.selectedItem?.toString() == Consts.CustomFlag
+        this.comboAliyunNewFilenameTemplate.addItemListener {
+            this.textAliyunNewFilenameCustomText.isVisible = it.item.toString() == Consts.CustomFlag
+            if (this.textAliyunNewFilenameCustomText.isVisible) {
+                this.textAliyunNewFilenameCustomText.requestFocus()
+            }
+        }
+
+        // checkAliyunEnable & components 联动效果
+        val components: Array<JComponent> = arrayOf(
+            this.textAliyunBucket,
+            this.textAliyunAccessKey,
+            this.textAliyunSecretKey,
+            this.textAliyunEndpoint,
+            this.comboAliyunNewFilenameTemplate,
+            this.textAliyunNewFilenameCustomText,
+            this.textAliyunStyleSuffix,
+            this.buttonTestAliyun
+        )
+        this.batchSetComponentEnabled(this.checkAliyunEnable.isSelected, *components)
+        this.checkAliyunEnable.addActionListener {
+            MISConfigService.getInstance().state?.let { state ->
+                state.aliyunEnabled = this.checkAliyunEnable.isSelected
+            }
+            this.batchSetComponentEnabled(this.checkAliyunEnable.isSelected, *components)
+        }
+
+        this.buttonTestAliyun.addActionListener {
+            // save config
+            this.apply()
+
+            // test connection
+            val message = if (MISFileStoreFactory.of(Consts.FileStoreAliyunOSS).test()) {
                 "Successful."
             } else {
                 "Upload fail, Please check the configuration."
@@ -196,9 +255,10 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
 
     override fun isModified(): Boolean {
         val state = MISConfigService.getInstance().state!!
-        return this.isModifiedWithLocal(state) || this.isModifiedWithQiniu(state)
+        return this.isModifiedWithLocal(state) || this.isModifiedWithQiniu(state) || this.isModifiedWithAliyun(state)
     }
 
+    @Suppress("DuplicatedCode")
     private fun isModifiedWithQiniu(state: MISConfig): Boolean {
         return this.batchNotEqualsWithAny(
             arrayOf(
@@ -220,6 +280,32 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
                 this.comboQiniuNewFilenameTemplate.selectedItem,
                 this.textQiniuNewFilenameCustomText.text,
                 this.textQiniuStyleSuffix.text
+            )
+        )
+    }
+
+    @Suppress("DuplicatedCode")
+    private fun isModifiedWithAliyun(state: MISConfig): Boolean {
+        return this.batchNotEqualsWithAny(
+            arrayOf(
+                state.aliyunEnabled,
+                state.aliyunBucket,
+                state.aliyunAccessKey,
+                state.aliyunSecretKey,
+                state.aliyunEndpoint,
+                state.aliyunNewFilenameTemplate,
+                state.aliyunNewFilenameCustomText,
+                state.aliyunStyleSuffix
+            ),
+            arrayOf(
+                this.checkAliyunEnable.isSelected,
+                this.textAliyunBucket.text,
+                this.textAliyunAccessKey.text,
+                this.textAliyunSecretKey.text,
+                this.textAliyunEndpoint.text,
+                this.comboAliyunNewFilenameTemplate.selectedItem,
+                this.textAliyunNewFilenameCustomText.text,
+                this.textAliyunStyleSuffix.text
             )
         )
     }
@@ -262,7 +348,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
         MISConfigService.getInstance().state?.let {
 
             // save local
-            it.localFileEnabled = this.checkLocalFileEnable.isEnabled
+            it.localFileEnabled = this.checkLocalFileEnable.isSelected
             it.localFileSavePathTemplate = this.comboLocalFileSavePathTemplate.selectedItem?.toString()!!
             it.localFileSavePathCustomText = this.textLocalFileSavePathCustomText.text
             it.localFileNewFilenameTemplate = this.comboLocalFileNewFilenameTemplate.selectedItem?.toString()!!
@@ -271,7 +357,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
 
 
             // save qiniu
-            it.qiniuEnabled = this.checkQiniuEnable.isEnabled
+            it.qiniuEnabled = this.checkQiniuEnable.isSelected
             it.qiniuBucket = this.textQiniuBucket.text
             it.qiniuAccessKey = this.textQiniuAccessKey.text
             it.qiniuSecretKey = this.textQiniuSecretKey.text
@@ -279,6 +365,17 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
             it.qiniuNewFilenameTemplate = this.comboQiniuNewFilenameTemplate.selectedItem?.toString()!!
             it.qiniuNewFilenameCustomText = this.textQiniuNewFilenameCustomText.text
             it.qiniuStyleSuffix = this.textQiniuStyleSuffix.text
+
+
+            // save aliyun oss
+            it.aliyunEnabled = this.checkAliyunEnable.isSelected
+            it.aliyunBucket = this.textAliyunBucket.text
+            it.aliyunAccessKey = this.textAliyunAccessKey.text
+            it.aliyunSecretKey = this.textAliyunSecretKey.text
+            it.aliyunEndpoint = this.textAliyunEndpoint.text
+            it.aliyunNewFilenameTemplate = this.comboAliyunNewFilenameTemplate.selectedItem?.toString()!!
+            it.aliyunNewFilenameCustomText = this.textAliyunNewFilenameCustomText.text
+            it.aliyunStyleSuffix = this.textAliyunStyleSuffix.text
 
             it.validMessage()?.let { message ->
                 Messages.showErrorDialog(message, "Save Error");

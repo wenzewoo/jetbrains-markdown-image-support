@@ -29,6 +29,4 @@ object Consts {
     const val FileStoreLocal = "Local"
     const val FileStoreQiniu = "Qiniu"
     const val FileStoreAliyunOSS = "AliyunOSS"
-    const val FileStoreTencentOSS = "TencentOSS"
-    val FileStoreList = arrayOf(FileStoreLocal, FileStoreQiniu, FileStoreAliyunOSS, FileStoreTencentOSS)
 }

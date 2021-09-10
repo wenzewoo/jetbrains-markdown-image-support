@@ -40,6 +40,7 @@ import com.intellij.psi.PsiElement
 import java.io.File
 import javax.swing.SwingWorker
 
+@Suppress("IntentionDescriptionNotFoundInspection")
 class MISDeleteImageIntentionAction : PsiElementBaseIntentionAction() {
     override fun getFamilyName(): String {
         return this.text
@@ -50,9 +51,9 @@ class MISDeleteImageIntentionAction : PsiElementBaseIntentionAction() {
     }
 
     override fun isAvailable(project: Project, editor: Editor?, element: PsiElement): Boolean {
-        return Toolkits.isMarkdownImageMark(
+        return Toolkits.isMarkdownFile(editor) && Toolkits.isMarkdownImageMark(
             Toolkits.getCurrentLineStringWithEditor(editor)
-        ) && Toolkits.isMarkdownFile(editor)
+        )
     }
 
     override fun invoke(project: Project, editor: Editor?, element: PsiElement) {
@@ -72,8 +73,7 @@ class DeleteImageSwingWorker(
 ) : SwingWorker<Boolean, Void>() {
     override fun doInBackground(): Boolean {
         val state = MISConfigService.getInstance().state!!
-
-        // local delete
+        // local
         return if (!markdownUrl.startsWith("http", true)) {
             val fromFile = (editor as EditorEx).virtualFile
             MISFileStoreFactory.of(Consts.FileStoreLocal).delete(
@@ -81,9 +81,13 @@ class DeleteImageSwingWorker(
                 markdownUrl
             )
         }
-        // qiniu delete
+        // qiniu
         else if (state.qiniuEnabled && markdownUrl.contains(state.qiniuDomain)) {
             MISFileStoreFactory.of(Consts.FileStoreQiniu).delete(null, markdownUrl)
+        }
+        // aliyun oss
+        else if (state.aliyunEnabled && markdownUrl.contains(state.aliyunEndpoint)) {
+            MISFileStoreFactory.of(Consts.FileStoreAliyunOSS).delete(null, markdownUrl)
         } else {
             false
         }

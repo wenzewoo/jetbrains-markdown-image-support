@@ -49,6 +49,17 @@ class MISConfig {
     var qiniuNewFilenameCustomText: String = ""
 
 
+    // aliyun oss
+    var aliyunEnabled: Boolean = false
+    var aliyunBucket: String = ""
+    var aliyunAccessKey: String = ""
+    var aliyunSecretKey: String = ""
+    var aliyunEndpoint: String = ""
+    var aliyunStyleSuffix: String? = ""
+    var aliyunNewFilenameTemplate: String = ""
+    var aliyunNewFilenameCustomText: String = ""
+
+
     var currentUploadTo = Consts.FileStoreLocal
 
 
@@ -92,6 +103,32 @@ class MISConfig {
                 if (this.qiniuNewFilenameCustomText.isEmpty()) {
                     this.qiniuEnabled = false
                     return "Please set qiniu new filename"
+                }
+            }
+        }
+
+        // valid aliyun oss
+        if (this.aliyunEnabled) {
+            if (this.aliyunBucket.isEmpty()) {
+                this.aliyunEnabled = false
+                return "Please set aliyun oss bucket"
+            }
+            if (this.aliyunAccessKey.isEmpty()) {
+                this.aliyunEnabled = false
+                return "Please set aliyun oss accessKey"
+            }
+            if (this.aliyunSecretKey.isEmpty()) {
+                this.aliyunEnabled = false
+                return "Please set aliyun oss secretKey"
+            }
+            if (this.aliyunEndpoint.isEmpty()) {
+                this.aliyunEnabled = false
+                return "Please set aliyun oss endpoint"
+            }
+            if (this.aliyunNewFilenameTemplate == Consts.CustomFlag) {
+                if (this.aliyunNewFilenameCustomText.isEmpty()) {
+                    this.aliyunEnabled = false
+                    return "Please set aliyun oss new filename"
                 }
             }
         }

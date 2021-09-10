@@ -31,4 +31,5 @@ public class MISPreUploadImageConfirmForm extends JDialog {
     protected JTextField textMarkdownTitle;
     protected JButton buttonOk;
     protected JButton buttonCancel;
+    protected JLabel labelTitle;
 }

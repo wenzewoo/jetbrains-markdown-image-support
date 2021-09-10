@@ -51,10 +51,22 @@ public class MISConfigurationInterfaceForm {
     protected JTextField textQiniuStyleSuffix;
     protected JButton buttonTestQiniu;
     protected final JRadioButton[] radioQiniuBucketZones = { //
-        this.radioQiniuBucketZoneEastChina, //
-        this.radioQiniuBucketZoneNorthChina, //
-        this.radioQiniuBucketZoneSouthChina, //
-        this.radioQiniuBucketZoneNorthAmerica, //
-        this.radioQiniuBucketZoneSoutheastAsia//
+            this.radioQiniuBucketZoneEastChina, //
+            this.radioQiniuBucketZoneNorthChina, //
+            this.radioQiniuBucketZoneSouthChina, //
+            this.radioQiniuBucketZoneNorthAmerica, //
+            this.radioQiniuBucketZoneSoutheastAsia//
     };
+
+
+    // aliyun oss config
+    protected JCheckBox checkAliyunEnable;
+    protected JTextField textAliyunBucket;
+    protected JTextField textAliyunAccessKey;
+    protected JTextField textAliyunSecretKey;
+    protected JTextField textAliyunEndpoint;
+    protected JComboBox comboAliyunNewFilenameTemplate;
+    protected JTextField textAliyunNewFilenameCustomText;
+    protected JTextField textAliyunStyleSuffix;
+    protected JButton buttonTestAliyun;
 }

@@ -22,24 +22,30 @@
  * SOFTWARE.
  */
 
-package com.github.wenzewoo.jetbrains.plugin.mis.filestore
+package com.github.wenzewoo.jetbrains.plugin.mis.filestore.impl
 
 import com.github.wenzewoo.jetbrains.plugin.mis.config.MISConfigService
 import com.github.wenzewoo.jetbrains.plugin.mis.entity.ImageWrapper
+import com.github.wenzewoo.jetbrains.plugin.mis.filestore.MISFileStore
 import com.github.wenzewoo.jetbrains.plugin.mis.toolkit.Toolkits
 import com.intellij.openapi.util.io.FileUtil
 import java.io.File
 import java.io.FileOutputStream
 import javax.imageio.ImageIO
 
-class MISLocalFileStore : MISFileStore {
+open class MISLocalFileStore : MISFileStore {
     override fun test(): Boolean {
         return true
     }
 
     override fun write(imageWrapper: ImageWrapper, saveAs: String): String {
         // create new empty file
-        val saveAsFile = File(saveAs.replaceFirst(".", imageWrapper.fromFile.parent.toString().replace("file://", "")))
+        val saveAsFile = File(
+            saveAs.replaceFirst(
+                ".",
+                imageWrapper.fromFile.parent.toString().replace("file://", "")
+            )
+        )
         FileUtil.createIfDoesntExist(saveAsFile)
 
         val saveAsSuffix = Toolkits.getFileSuffix(saveAsFile);
@@ -52,10 +58,10 @@ class MISLocalFileStore : MISFileStore {
                 FileUtil.copy(imageWrapper.imageFile!!, saveAsFile)
             } else {
                 // Generate pictures
-                val out = FileOutputStream(saveAsFile)
-                ImageIO.write(imageWrapper.image, saveAsSuffix, out)
-                out.flush()
-                out.close()
+                FileOutputStream(saveAsFile).use {
+                    ImageIO.write(imageWrapper.image, saveAsSuffix, it)
+                    it.flush()
+                }
             }
         }
         return saveAs
