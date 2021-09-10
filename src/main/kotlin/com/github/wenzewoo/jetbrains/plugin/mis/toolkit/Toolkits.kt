@@ -117,10 +117,10 @@ object Toolkits {
     }
 
     fun isMarkdownFile(editor: Editor?): Boolean {
-        if (null == editor) {
-            return false
-        }
-        return (editor is EditorEx && editor.virtualFile.fileType.name.toLowerCase() == "markdown")
+        if (null == editor) return false
+        if (editor !is EditorEx) return false
+        if (null == editor.virtualFile) return false
+        return editor.virtualFile.fileType.name.toLowerCase() == "markdown"
     }
 
     fun isMarkdownImageMark(string: String): Boolean {
