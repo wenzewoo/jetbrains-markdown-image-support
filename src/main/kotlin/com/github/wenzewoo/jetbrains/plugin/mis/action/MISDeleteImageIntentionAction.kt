@@ -88,6 +88,10 @@ class DeleteImageSwingWorker(
         // aliyun oss
         else if (state.aliyunEnabled && markdownUrl.contains(state.aliyunEndpoint)) {
             MISFileStoreFactory.of(Consts.FileStoreAliyunOSS).delete(null, markdownUrl)
+        }
+        // minio
+        else if (state.minioEnabled && markdownUrl.contains(state.minioEndpoint)) {
+            MISFileStoreFactory.of(Consts.FileStoreMinIO).delete(null, markdownUrl)
         } else {
             false
         }

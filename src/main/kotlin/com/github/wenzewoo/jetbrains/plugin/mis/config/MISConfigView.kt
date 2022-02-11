@@ -80,6 +80,16 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
             this.comboAliyunNewFilenameTemplate.selectedItem = it.aliyunNewFilenameTemplate
             this.textAliyunNewFilenameCustomText.text = it.aliyunNewFilenameCustomText
             this.textAliyunStyleSuffix.text = it.aliyunStyleSuffix
+
+
+            // minio
+            this.checkMinioEnable.isSelected = it.minioEnabled
+            this.textMinioBucket.text = it.minioBucket
+            this.textMinioAccessKey.text = it.minioAccessKey
+            this.textMinioSecretKey.text = it.minioSecretKey
+            this.textMinioEndpoint.text = it.minioEndpoint
+            this.comboMinioNewFilenameTemplate.selectedItem = it.minioNewFilenameTemplate
+            this.textMinioNewFilenameCustomText.text = it.minioNewFilenameCustomText
         }
     }
 
@@ -87,6 +97,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
         this.initializationComponentsListenerWithLocal()
         this.initializationComponentsListenerWithQiniu()
         this.initializationComponentsListenerWithAliyun()
+        this.initializationComponentsListenerWithMinIO()
     }
 
     private fun initializationComponentsListenerWithQiniu() {
@@ -188,6 +199,51 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
         }
     }
 
+
+
+    private fun initializationComponentsListenerWithMinIO() {
+        // newFileName 联动效果
+        this.textMinioNewFilenameCustomText.isVisible =
+            this.comboMinioNewFilenameTemplate.selectedItem?.toString() == Consts.CustomFlag
+        this.comboMinioNewFilenameTemplate.addItemListener {
+            this.textMinioNewFilenameCustomText.isVisible = it.item.toString() == Consts.CustomFlag
+            if (this.textMinioNewFilenameCustomText.isVisible) {
+                this.textMinioNewFilenameCustomText.requestFocus()
+            }
+        }
+
+        // checkMinioEnable & components 联动效果
+        val components: Array<JComponent> = arrayOf(
+            this.textMinioBucket,
+            this.textMinioAccessKey,
+            this.textMinioSecretKey,
+            this.textMinioEndpoint,
+            this.comboMinioNewFilenameTemplate,
+            this.textMinioNewFilenameCustomText,
+            this.buttonTestMinio
+        )
+        this.batchSetComponentEnabled(this.checkMinioEnable.isSelected, *components)
+        this.checkMinioEnable.addActionListener {
+            MISConfigService.getInstance().state?.let { state ->
+                state.aliyunEnabled = this.checkMinioEnable.isSelected
+            }
+            this.batchSetComponentEnabled(this.checkMinioEnable.isSelected, *components)
+        }
+
+        this.buttonTestMinio.addActionListener {
+            // save config
+            this.apply()
+
+            // test connection
+            val message = if (MISFileStoreFactory.of(Consts.FileStoreMinIO).test()) {
+                "Successful."
+            } else {
+                "Upload fail, Please check the configuration."
+            }
+            Messages.showInfoMessage(message, "Test Result")
+        }
+    }
+
     private fun selectRadioWithQiniuBucketZone(index: Int) {
         if (index in 0..4) {
             MISConfigService.getInstance().state?.let {
@@ -255,7 +311,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
 
     override fun isModified(): Boolean {
         val state = MISConfigService.getInstance().state!!
-        return this.isModifiedWithLocal(state) || this.isModifiedWithQiniu(state) || this.isModifiedWithAliyun(state)
+        return this.isModifiedWithLocal(state) || this.isModifiedWithQiniu(state) || this.isModifiedWithAliyun(state) || this.isModifiedWithMinIO(state)
     }
 
     @Suppress("DuplicatedCode")
@@ -310,6 +366,32 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
         )
     }
 
+
+
+    @Suppress("DuplicatedCode")
+    private fun isModifiedWithMinIO(state: MISConfig): Boolean {
+        return this.batchNotEqualsWithAny(
+            arrayOf(
+                state.minioEnabled,
+                state.minioBucket,
+                state.minioAccessKey,
+                state.minioSecretKey,
+                state.minioEndpoint,
+                state.minioNewFilenameTemplate,
+                state.minioNewFilenameCustomText
+            ),
+            arrayOf(
+                this.checkMinioEnable.isSelected,
+                this.textMinioBucket.text,
+                this.textMinioAccessKey.text,
+                this.textMinioSecretKey.text,
+                this.textMinioEndpoint.text,
+                this.comboMinioNewFilenameTemplate.selectedItem,
+                this.textMinioNewFilenameCustomText.text
+            )
+        )
+    }
+
     private fun isModifiedWithLocal(state: MISConfig): Boolean {
         return this.batchNotEqualsWithAny(
             arrayOf(
@@ -349,33 +431,42 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
 
             // save local
             it.localFileEnabled = this.checkLocalFileEnable.isSelected
-            it.localFileSavePathTemplate = this.comboLocalFileSavePathTemplate.selectedItem?.toString()!!
-            it.localFileSavePathCustomText = this.textLocalFileSavePathCustomText.text
-            it.localFileNewFilenameTemplate = this.comboLocalFileNewFilenameTemplate.selectedItem?.toString()!!
-            it.localFileNewFilenameCustomText = this.textLocalFileNewFilenameCustomText.text
+            it.localFileSavePathTemplate = this.comboLocalFileSavePathTemplate.selectedItem?.toString()!!.trim()
+            it.localFileSavePathCustomText = this.textLocalFileSavePathCustomText.text.trim()
+            it.localFileNewFilenameTemplate = this.comboLocalFileNewFilenameTemplate.selectedItem?.toString()!!.trim()
+            it.localFileNewFilenameCustomText = this.textLocalFileNewFilenameCustomText.text.trim()
             it.localFileImageQuality = this.sliderLocalFileImageQuality.value
 
 
             // save qiniu
             it.qiniuEnabled = this.checkQiniuEnable.isSelected
-            it.qiniuBucket = this.textQiniuBucket.text
-            it.qiniuAccessKey = this.textQiniuAccessKey.text
-            it.qiniuSecretKey = this.textQiniuSecretKey.text
-            it.qiniuDomain = this.textQiniuDomain.text
-            it.qiniuNewFilenameTemplate = this.comboQiniuNewFilenameTemplate.selectedItem?.toString()!!
-            it.qiniuNewFilenameCustomText = this.textQiniuNewFilenameCustomText.text
-            it.qiniuStyleSuffix = this.textQiniuStyleSuffix.text
+            it.qiniuBucket = this.textQiniuBucket.text.trim()
+            it.qiniuAccessKey = this.textQiniuAccessKey.text.trim()
+            it.qiniuSecretKey = this.textQiniuSecretKey.text.trim()
+            it.qiniuDomain = this.textQiniuDomain.text.trim()
+            it.qiniuNewFilenameTemplate = this.comboQiniuNewFilenameTemplate.selectedItem?.toString()!!.trim()
+            it.qiniuNewFilenameCustomText = this.textQiniuNewFilenameCustomText.text.trim()
+            it.qiniuStyleSuffix = this.textQiniuStyleSuffix.text.trim()
 
 
             // save aliyun oss
             it.aliyunEnabled = this.checkAliyunEnable.isSelected
-            it.aliyunBucket = this.textAliyunBucket.text
-            it.aliyunAccessKey = this.textAliyunAccessKey.text
-            it.aliyunSecretKey = this.textAliyunSecretKey.text
-            it.aliyunEndpoint = this.textAliyunEndpoint.text
-            it.aliyunNewFilenameTemplate = this.comboAliyunNewFilenameTemplate.selectedItem?.toString()!!
-            it.aliyunNewFilenameCustomText = this.textAliyunNewFilenameCustomText.text
-            it.aliyunStyleSuffix = this.textAliyunStyleSuffix.text
+            it.aliyunBucket = this.textAliyunBucket.text.trim()
+            it.aliyunAccessKey = this.textAliyunAccessKey.text.trim()
+            it.aliyunSecretKey = this.textAliyunSecretKey.text.trim()
+            it.aliyunEndpoint = this.textAliyunEndpoint.text.trim()
+            it.aliyunNewFilenameTemplate = this.comboAliyunNewFilenameTemplate.selectedItem?.toString()!!.trim()
+            it.aliyunNewFilenameCustomText = this.textAliyunNewFilenameCustomText.text.trim()
+            it.aliyunStyleSuffix = this.textAliyunStyleSuffix.text.trim()
+
+
+            it.minioEnabled = this.checkMinioEnable.isSelected
+            it.minioBucket = this.textMinioBucket.text.trim()
+            it.minioAccessKey = this.textMinioAccessKey.text.trim()
+            it.minioSecretKey = this.textMinioSecretKey.text.trim()
+            it.minioEndpoint = this.textMinioEndpoint.text.trim()
+            it.minioNewFilenameTemplate = this.comboMinioNewFilenameTemplate.selectedItem?.toString()!!.trim()
+            it.minioNewFilenameCustomText = this.textMinioNewFilenameCustomText.text.trim()
 
             it.validMessage()?.let { message ->
                 Messages.showErrorDialog(message, "Save Error");

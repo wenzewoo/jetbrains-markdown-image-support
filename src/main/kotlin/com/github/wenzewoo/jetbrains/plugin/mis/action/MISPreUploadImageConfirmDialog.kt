@@ -72,15 +72,14 @@ class MISPreUploadImageConfirmDialog(
         // init comboUploadTo
         this.comboUploadTo.removeAllItems()
         MISConfigService.getInstance().state?.let {
-            if (it.localFileEnabled) {
+            if (it.localFileEnabled)
                 this.comboUploadTo.addItem(Consts.FileStoreLocal)
-            }
-            if (it.qiniuEnabled) {
+            if (it.qiniuEnabled)
                 this.comboUploadTo.addItem(Consts.FileStoreQiniu)
-            }
-            if (it.aliyunEnabled) {
+            if (it.aliyunEnabled)
                 this.comboUploadTo.addItem(Consts.FileStoreAliyunOSS)
-            }
+            if (it.minioEnabled)
+                this.comboUploadTo.addItem(Consts.FileStoreMinIO)
             this.comboUploadTo.selectedItem = it.currentUploadTo
         }
 
@@ -141,6 +140,14 @@ class MISPreUploadImageConfirmDialog(
                         this.replaceVariable(it.aliyunNewFilenameTemplate)
                     } else {
                         this.replaceVariable(it.aliyunNewFilenameCustomText)
+                    }
+                }
+                // init aliyun oss
+                Consts.FileStoreMinIO -> {
+                    this.textSaveAs.text = if (it.minioNewFilenameTemplate != Consts.CustomFlag) {
+                        this.replaceVariable(it.minioNewFilenameTemplate)
+                    } else {
+                        this.replaceVariable(it.minioNewFilenameCustomText)
                     }
                 }
             }

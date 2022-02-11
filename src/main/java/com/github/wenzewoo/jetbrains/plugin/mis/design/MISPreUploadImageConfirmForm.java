@@ -22,6 +22,7 @@ package com.github.wenzewoo.jetbrains.plugin.mis.design;
 
 import javax.swing.*;
 
+@SuppressWarnings("rawtypes")
 public class MISPreUploadImageConfirmForm extends JDialog {
     private static final long serialVersionUID = -7499466859041980308L;
     protected JPanel dialogPanel;

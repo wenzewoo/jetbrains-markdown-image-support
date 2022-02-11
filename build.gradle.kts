@@ -29,7 +29,7 @@ plugins {
 }
 
 group = "com.github.wenzewoo.jetbrains.plugin"
-version = "1.3-SNAPSHOT"
+version = "1.4-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -37,9 +37,10 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    compile("net.coobird", "thumbnailator", "0.4.8")
-    compile("com.qiniu", "qiniu-java-sdk", "7.2.28")
-    compile("com.aliyun.oss", "aliyun-sdk-oss", "3.13.0")
+    implementation("net.coobird", "thumbnailator", "0.4.8")
+    implementation("com.qiniu", "qiniu-java-sdk", "7.2.28")
+    implementation("com.aliyun.oss", "aliyun-sdk-oss", "3.13.0")
+    implementation("io.minio", "minio", "5.0.6")
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/

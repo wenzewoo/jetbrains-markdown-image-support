@@ -29,4 +29,5 @@ object Consts {
     const val FileStoreLocal = "Local"
     const val FileStoreQiniu = "Qiniu"
     const val FileStoreAliyunOSS = "AliyunOSS"
+    const val FileStoreMinIO = "MinIO"
 }

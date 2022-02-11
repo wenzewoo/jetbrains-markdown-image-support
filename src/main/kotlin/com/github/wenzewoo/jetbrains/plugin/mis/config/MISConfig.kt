@@ -29,7 +29,7 @@ import com.github.wenzewoo.jetbrains.plugin.mis.toolkit.Consts
 class MISConfig {
 
     // local
-    var localFileEnabled: Boolean = false
+    var localFileEnabled: Boolean = true
     var localFileSavePathTemplate: String = ""
     var localFileSavePathCustomText: String = ""
     var localFileNewFilenameTemplate: String = ""
@@ -42,9 +42,9 @@ class MISConfig {
     var qiniuBucket: String = ""
     var qiniuAccessKey: String = ""
     var qiniuSecretKey: String = ""
-    var qiniuDomain: String = ""
+    var qiniuDomain: String = "http://qz7fmp0tv.hn-bkt.clouddn.com"
     var qiniuBucketZone: Int = 0
-    var qiniuStyleSuffix: String? = ""
+    var qiniuStyleSuffix: String? = "?imageView2/0/interlace/1/q/50|imageslim"
     var qiniuNewFilenameTemplate: String = ""
     var qiniuNewFilenameCustomText: String = ""
 
@@ -54,10 +54,19 @@ class MISConfig {
     var aliyunBucket: String = ""
     var aliyunAccessKey: String = ""
     var aliyunSecretKey: String = ""
-    var aliyunEndpoint: String = ""
-    var aliyunStyleSuffix: String? = ""
+    var aliyunEndpoint: String = "oss-cn-chengdu.aliyuncs.com"
+    var aliyunStyleSuffix: String? = "?x-oss-process=image/auto-orient,1/interlace,1/quality,q_50/format,jpg"
     var aliyunNewFilenameTemplate: String = ""
     var aliyunNewFilenameCustomText: String = ""
+
+    // minio
+    var minioEnabled: Boolean = false
+    var minioBucket: String = ""
+    var minioAccessKey: String = ""
+    var minioSecretKey: String = ""
+    var minioEndpoint: String = "https://play.min.io:9000"
+    var minioNewFilenameTemplate: String = ""
+    var minioNewFilenameCustomText: String = ""
 
 
     var currentUploadTo = Consts.FileStoreLocal
@@ -129,6 +138,32 @@ class MISConfig {
                 if (this.aliyunNewFilenameCustomText.isEmpty()) {
                     this.aliyunEnabled = false
                     return "Please set aliyun oss new filename"
+                }
+            }
+        }
+
+        // valid minio
+        if (this.minioEnabled) {
+            if (this.minioBucket.isEmpty()) {
+                this.minioEnabled = false
+                return "Please set minio bucket"
+            }
+            if (this.minioAccessKey.isEmpty()) {
+                this.minioEnabled = false
+                return "Please set minio accessKey"
+            }
+            if (this.minioSecretKey.isEmpty()) {
+                this.minioEnabled = false
+                return "Please set minio secretKey"
+            }
+            if (this.minioEndpoint.isEmpty()) {
+                this.minioEnabled = false
+                return "Please set minio endpoint"
+            }
+            if (this.minioNewFilenameTemplate == Consts.CustomFlag) {
+                if (this.minioNewFilenameCustomText.isEmpty()) {
+                    this.minioEnabled = false
+                    return "Please set minio new filename"
                 }
             }
         }

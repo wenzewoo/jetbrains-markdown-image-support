@@ -73,6 +73,7 @@ class MISQiniuFileStore : MISAbstractOSSFileStore() {
             }
             false
         } catch (e: Throwable) {
+            e.printStackTrace()
             false
         }
     }

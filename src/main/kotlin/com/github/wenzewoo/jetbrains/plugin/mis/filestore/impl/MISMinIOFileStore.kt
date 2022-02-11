@@ -24,37 +24,57 @@
 
 package com.github.wenzewoo.jetbrains.plugin.mis.filestore.impl
 
-import com.aliyun.oss.OSSClientBuilder
 import com.github.wenzewoo.jetbrains.plugin.mis.config.MISConfigService
+import com.intellij.openapi.util.io.FileUtil
+import io.minio.*
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.lang.IllegalArgumentException
 import java.net.HttpURLConnection
 import java.net.URL
 
-class MISAliyunOSSFileStore : MISAbstractOSSFileStore() {
+class MISMinIOFileStore : MISAbstractOSSFileStore() {
     private val state = MISConfigService.getInstance().state!!
-    private val ossClient = OSSClientBuilder().build(state.aliyunEndpoint, state.aliyunAccessKey, state.aliyunSecretKey)
 
+    private var minioClient: MinioClient? = null
 
-    @Suppress("HttpUrlsUsage")
-    override fun delete(localFile: File?, markdownUrl: String): Boolean {
-        var fileKey = markdownUrl.replace("https://${state.aliyunBucket}.${state.aliyunEndpoint}", "")
-            .replace("http://${state.aliyunBucket}.${state.aliyunEndpoint}", "")
-            .replace(state.aliyunStyleSuffix ?: "", "")
-        if (fileKey.startsWith("/")) {
-            fileKey = fileKey.substring(1)
+    private fun minioClient(): MinioClient {
+        if (null == minioClient)
+            minioClient = MinioClient(state.minioEndpoint, state.minioAccessKey, state.minioSecretKey)
+
+        minioClient?.let {
+            // check bucket
+            if (!it.bucketExists(state.minioBucket))
+                throw IllegalArgumentException("The MinIO bucket '" + state.minioBucket + "' is not found.")
+
         }
+        return minioClient!!
+    }
+
+
+    override fun delete(localFile: File?, markdownUrl: String): Boolean {
+        val fileKey = markdownUrl.replace("${state.minioEndpoint}/", "")
+            .replace("${state.minioBucket}/", "")
 
         return try {
-            ossClient.deleteObject(state.aliyunBucket, fileKey)
+            this.minioClient().removeObject(state.minioBucket, fileKey)
             true
         } catch (e: Throwable) {
+            e.printStackTrace()
             false
         }
     }
 
     override fun upload(byteArray: ByteArray, fileKey: String, check: Boolean): Boolean {
+        val exchange = File("${System.getProperty("java.io.tmpdir")}${File.separator}${System.currentTimeMillis()}")
         return try {
-            ossClient.putObject(state.aliyunBucket, fileKey, byteArray.inputStream())
+            FileOutputStream(exchange).use { output ->
+                BufferedOutputStream(output).use { bufferedOutput ->
+                    bufferedOutput.write(byteArray)
+                }
+            }
+            this.minioClient().putObject(state.minioBucket, fileKey, exchange.absolutePath)
             if (check) {
                 val url = URL(this.previewUrl(fileKey, false))
                 val conn = url.openConnection() as HttpURLConnection
@@ -64,11 +84,14 @@ class MISAliyunOSSFileStore : MISAbstractOSSFileStore() {
         } catch (e: Throwable) {
             e.printStackTrace()
             false
+        } finally {
+            if (exchange.exists())
+                FileUtil.asyncDelete(exchange)
         }
     }
 
-    override fun previewUrl(fileKey: String, styleSuffix: Boolean): String {
-        return "https://${state.aliyunBucket}.${state.aliyunEndpoint}/${fileKey}${if (styleSuffix) state.aliyunStyleSuffix else ""}"
-    }
 
+    override fun previewUrl(fileKey: String, styleSuffix: Boolean): String {
+        return this.minioClient().getObjectUrl(state.minioBucket, fileKey)
+    }
 }

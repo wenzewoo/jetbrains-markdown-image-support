@@ -22,6 +22,7 @@ package com.github.wenzewoo.jetbrains.plugin.mis.design;
 
 import javax.swing.*;
 
+@SuppressWarnings("rawtypes")
 public class MISConfigurationInterfaceForm {
     protected JPanel rootPanel;
     protected JTabbedPane tabPanel;
@@ -69,4 +70,15 @@ public class MISConfigurationInterfaceForm {
     protected JTextField textAliyunNewFilenameCustomText;
     protected JTextField textAliyunStyleSuffix;
     protected JButton buttonTestAliyun;
+
+
+    // minio config
+    protected JCheckBox checkMinioEnable;
+    protected JTextField textMinioBucket;
+    protected JTextField textMinioEndpoint;
+    protected JTextField textMinioSecretKey;
+    protected JTextField textMinioAccessKey;
+    protected JComboBox comboMinioNewFilenameTemplate;
+    protected JTextField textMinioNewFilenameCustomText;
+    protected JButton buttonTestMinio;
 }
