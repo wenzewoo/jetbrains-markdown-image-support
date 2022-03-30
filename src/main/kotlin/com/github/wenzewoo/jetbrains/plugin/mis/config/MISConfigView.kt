@@ -225,7 +225,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
         this.batchSetComponentEnabled(this.checkMinioEnable.isSelected, *components)
         this.checkMinioEnable.addActionListener {
             MISConfigService.getInstance().state?.let { state ->
-                state.aliyunEnabled = this.checkMinioEnable.isSelected
+                state.minioEnabled = this.checkMinioEnable.isSelected
             }
             this.batchSetComponentEnabled(this.checkMinioEnable.isSelected, *components)
         }
