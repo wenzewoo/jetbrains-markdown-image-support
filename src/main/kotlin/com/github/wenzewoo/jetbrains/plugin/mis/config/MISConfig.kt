@@ -54,6 +54,7 @@ class MISConfig {
     var aliyunBucket: String = ""
     var aliyunAccessKey: String = ""
     var aliyunSecretKey: String = ""
+    var aliyunCustomDomain: String = ""
     var aliyunEndpoint: String = "oss-cn-chengdu.aliyuncs.com"
     var aliyunStyleSuffix: String? = "?x-oss-process=image/auto-orient,1/interlace,1/quality,q_50/format,jpg"
     var aliyunNewFilenameTemplate: String = ""

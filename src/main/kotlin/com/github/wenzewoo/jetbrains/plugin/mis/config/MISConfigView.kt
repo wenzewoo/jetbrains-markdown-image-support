@@ -77,6 +77,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
             this.textAliyunAccessKey.text = it.aliyunAccessKey
             this.textAliyunSecretKey.text = it.aliyunSecretKey
             this.textAliyunEndpoint.text = it.aliyunEndpoint
+            this.aliyunCustomDomain.text = it.aliyunCustomDomain
             this.comboAliyunNewFilenameTemplate.selectedItem = it.aliyunNewFilenameTemplate
             this.textAliyunNewFilenameCustomText.text = it.aliyunNewFilenameCustomText
             this.textAliyunStyleSuffix.text = it.aliyunStyleSuffix
@@ -175,7 +176,8 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
             this.comboAliyunNewFilenameTemplate,
             this.textAliyunNewFilenameCustomText,
             this.textAliyunStyleSuffix,
-            this.buttonTestAliyun
+            this.buttonTestAliyun,
+            this.aliyunCustomDomain
         )
         this.batchSetComponentEnabled(this.checkAliyunEnable.isSelected, *components)
         this.checkAliyunEnable.addActionListener {
@@ -359,6 +361,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
                 this.textAliyunAccessKey.text,
                 this.textAliyunSecretKey.text,
                 this.textAliyunEndpoint.text,
+                this.aliyunCustomDomain.text,
                 this.comboAliyunNewFilenameTemplate.selectedItem,
                 this.textAliyunNewFilenameCustomText.text,
                 this.textAliyunStyleSuffix.text
@@ -455,6 +458,7 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
             it.aliyunAccessKey = this.textAliyunAccessKey.text.trim()
             it.aliyunSecretKey = this.textAliyunSecretKey.text.trim()
             it.aliyunEndpoint = this.textAliyunEndpoint.text.trim()
+            it.aliyunCustomDomain = this.aliyunCustomDomain.text.trim()
             it.aliyunNewFilenameTemplate = this.comboAliyunNewFilenameTemplate.selectedItem?.toString()!!.trim()
             it.aliyunNewFilenameCustomText = this.textAliyunNewFilenameCustomText.text.trim()
             it.aliyunStyleSuffix = this.textAliyunStyleSuffix.text.trim()
