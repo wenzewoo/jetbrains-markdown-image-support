@@ -68,12 +68,11 @@ class MISAliyunOSSFileStore : MISAbstractOSSFileStore() {
     }
 
     override fun previewUrl(fileKey: String, styleSuffix: Boolean): String {
-        MISConfigService.getInstance().state!!.aliyunCustomDomain
-        return if (MISConfigService.getInstance().state!!.aliyunCustomDomain.isEmpty()) {
+        val state = MISConfigService.getInstance().state!!
+        return if (state.aliyunCustomDomain.isEmpty()) {
             "https://${state.aliyunBucket}.${state.aliyunEndpoint}/${fileKey}${if (styleSuffix) state.aliyunStyleSuffix else ""}"
         } else {
-            "https://${state.aliyunCustomDomain}/${fileKey}${if (styleSuffix)
-                state.aliyunStyleSuffix else ""}"
+            "https://${state.aliyunCustomDomain}/${fileKey}${if (styleSuffix) state.aliyunStyleSuffix else ""}"
         }
     }
 

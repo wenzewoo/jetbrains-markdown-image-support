@@ -477,5 +477,4 @@ class MISConfigView : MISConfigurationInterfaceForm(), SearchableConfigurable, C
             }
         }
     }
-
 }
