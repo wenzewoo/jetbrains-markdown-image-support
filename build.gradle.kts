@@ -29,7 +29,7 @@ plugins {
 }
 
 group = "com.github.wenzewoo.jetbrains.plugin"
-version = "1.4-SNAPSHOT"
+version = "1.4.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
