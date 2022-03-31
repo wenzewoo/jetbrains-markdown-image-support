@@ -38,7 +38,7 @@
             Markdown editor one click upload image support is applicable to common products of JetBrains series.
             <p>Features：</p>
             <ul>
-                <li>Multiple storage support, such as local / qiniu / aliyun OSS / tencent OSS, etc.</li>
+                <li>Multiple storage support, such as local / qiniu / aliyun OSS / MinIO.</li>
                 <li>Customize the file name naming policy and provide a variety of preset schemes.</li>
                 <li>Provide picture compression function, compress pictures according to the set compression rate.</li>
                 <li>Directly from the paste image to the editor, automatically upload the image and convert it to the markdown tag.</li>
@@ -51,7 +51,7 @@
             Markdown编辑器一键上传图片支持，适用于Jetbrains系列的常见产品。
             <p>特性：</p>
             <ul>
-                <li>多种存储支持，如本地/七牛/阿里云OSS/腾讯OSS等。</li>
+                <li>多种存储支持，如本地/七牛/阿里云OSS/MinIO等。</li>
                 <li>自定义文件名命名策略，并提供多种预设方案。</li>
                 <li>提供图片压缩功能，按照设置的压缩率压缩图片。</li>
                 <li>直接从粘贴图片到编辑器，自动上传图片并转换为Markdown标签。</li>
@@ -66,6 +66,14 @@
 ]]></description>
 
     <change-notes><![CDATA[
+
+        <p>1.4.1-SNAPSHOT：2022/03/31</p>
+        <ul>
+            <li>阿里云OSS支持自定义域名</li>
+            <li>修复了若干BUG</li>
+            <li>By <a href="https://github.com/boatrainlsz">@boatrainlsz</a></li>
+        </ul>
+        <hr/>
 
         <p>1.4-SNAPSHOT：2022/02/11</p>
         <ul>
