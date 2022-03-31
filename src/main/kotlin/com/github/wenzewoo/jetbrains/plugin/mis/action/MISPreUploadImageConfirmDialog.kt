@@ -80,6 +80,8 @@ class MISPreUploadImageConfirmDialog(
                 this.comboUploadTo.addItem(Consts.FileStoreAliyunOSS)
             if (it.minioEnabled)
                 this.comboUploadTo.addItem(Consts.FileStoreMinIO)
+            if (it.gitHubEnabled)
+                this.comboUploadTo.addItem(Consts.FileStoreGitHub)
             this.comboUploadTo.selectedItem = it.currentUploadTo
         }
 

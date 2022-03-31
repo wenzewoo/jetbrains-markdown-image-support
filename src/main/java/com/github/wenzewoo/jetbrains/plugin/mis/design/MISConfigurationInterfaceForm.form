@@ -806,6 +806,193 @@
               </grid>
             </children>
           </grid>
+          <grid id="c6ed3" layout-manager="GridLayoutManager" row-count="11" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="GitHub"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <hspacer id="83087">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="-1" height="15"/>
+                  </grid>
+                </constraints>
+              </hspacer>
+              <component id="a7d4f" class="javax.swing.JCheckBox" binding="checkGitHubEnable">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <enabled value="true"/>
+                  <selected value="false"/>
+                  <text value="Enable?"/>
+                </properties>
+              </component>
+              <component id="f9287" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Repo Name"/>
+                </properties>
+              </component>
+              <component id="13d02" class="javax.swing.JTextField" binding="githubRepoName">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="格式：username/reponame"/>
+                </properties>
+              </component>
+              <component id="64d20" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Branch"/>
+                </properties>
+              </component>
+              <component id="217d1" class="javax.swing.JTextField" binding="githubRepoBranch">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="master"/>
+                </properties>
+              </component>
+              <component id="d5f70" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Token"/>
+                </properties>
+              </component>
+              <component id="73876" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Store Path"/>
+                </properties>
+              </component>
+              <component id="6a398" class="javax.swing.JTextField" binding="githubToken">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="bc566" class="javax.swing.JTextField" binding="githubStoragePath">
+                <constraints>
+                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="a8f77" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="New fileame"/>
+                </properties>
+              </component>
+              <component id="a063e" class="javax.swing.JComboBox" binding="comboGitHubNewFilenameTemplate">
+                <constraints>
+                  <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <model>
+                    <item value="images/${yyyyMMdd}/${UUID}.${Suffix}"/>
+                    <item value="images/${MDFile}/${Timestamp}.${Suffix}"/>
+                    <item value="${MDFile}-${Timestamp}.${Suffix}"/>
+                    <item value="${yyyyMMdd}-${UUID}.${Suffix}"/>
+                    <item value="${UUID}.${Suffix}"/>
+                    <item value="${Timestamp}.${Suffix}"/>
+                    <item value="Custom.."/>
+                  </model>
+                </properties>
+              </component>
+              <component id="eb01b" class="javax.swing.JTextField" binding="textGitHubNewFilenameCustomText">
+                <constraints>
+                  <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="6dd2c" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;&#10;&lt;b&gt;Variable&lt;/b&gt;： &lt;br/&gt; &#10;- &lt;code&gt;${MDFile}&lt;/code&gt;: Current markdown file name, such as &quot;example&quot; &lt;br/&gt;&#10;- &lt;code&gt;${Suffix}&lt;/code&gt;: Current image file suffix, such as &quot;png&quot; &lt;br/&gt;&#10;- &lt;code&gt;${yyyyMMdd}&lt;/code&gt;: Current date, such as &quot;20200401&quot;  &lt;br/&gt;&#10;- &lt;code&gt;${Timestamp}&lt;/code&gt;: Current time stamp, such as &quot;1585819668627&quot;  &lt;br/&gt;&#10;- &lt;code&gt;${UUID}&lt;/code&gt;: Random 32-bit string, such as &quot;67b52ab3e50643e08b8cb980c2ecdaed&quot; &lt;br/&gt;&#10;&lt;/html&gt;" noi18n="true"/>
+                </properties>
+              </component>
+              <grid id="c87a1" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="b52e0" class="javax.swing.JButton" binding="buttonTestGitHub">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Test"/>
+                    </properties>
+                  </component>
+                  <hspacer id="11616">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                  <grid id="fd932" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </grid>
+              <component id="9f838" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Cutsom Domain"/>
+                </properties>
+              </component>
+              <component id="2d07d" class="javax.swing.JTextField" binding="githubCustomDomain">
+                <constraints>
+                  <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="https://example.com"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </tabbedpane>
     </children>

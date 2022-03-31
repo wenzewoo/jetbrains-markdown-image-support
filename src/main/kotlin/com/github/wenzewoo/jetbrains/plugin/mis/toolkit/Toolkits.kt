@@ -111,8 +111,8 @@ object Toolkits {
     fun haveFileStore(): Boolean {
         val state = MISConfigService.getInstance().state
         if (null != state) {
-            return state.localFileEnabled || state.qiniuEnabled
-                    || state.aliyunEnabled || state.minioEnabled
+            return state.localFileEnabled || state.qiniuEnabled ||
+                    state.aliyunEnabled || state.minioEnabled || state.gitHubEnabled
         }
         return false
     }

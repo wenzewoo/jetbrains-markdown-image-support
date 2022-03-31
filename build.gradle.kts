@@ -41,6 +41,7 @@ dependencies {
     implementation("com.qiniu", "qiniu-java-sdk", "7.2.28")
     implementation("com.aliyun.oss", "aliyun-sdk-oss", "3.13.0")
     implementation("io.minio", "minio", "5.0.6")
+    implementation("org.kohsuke", "github-api", "1.303")
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
