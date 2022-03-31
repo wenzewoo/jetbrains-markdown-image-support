@@ -70,6 +70,7 @@ public class MISConfigurationInterfaceForm {
     protected JTextField textAliyunNewFilenameCustomText;
     protected JTextField textAliyunStyleSuffix;
     protected JButton buttonTestAliyun;
+    protected JTextField aliyunCustomDomain;
 
 
     // minio config

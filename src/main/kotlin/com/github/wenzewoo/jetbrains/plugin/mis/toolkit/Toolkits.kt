@@ -112,6 +112,7 @@ object Toolkits {
         val state = MISConfigService.getInstance().state
         if (null != state) {
             return state.localFileEnabled || state.qiniuEnabled
+                    || state.aliyunEnabled || state.minioEnabled
         }
         return false
     }
