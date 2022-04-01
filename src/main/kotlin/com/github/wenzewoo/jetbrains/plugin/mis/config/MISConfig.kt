@@ -62,8 +62,8 @@ class MISConfig {
 
     // GitHub
     var gitHubEnabled: Boolean = false
-    var githubRepoName: String = ""
-    var githubRepoBranch: String = ""
+    var githubRepoName: String = "username/repo"
+    var githubRepoBranch: String = "master"
     var githubToken: String = ""
     var githubStoragePath: String = ""
     var githubCustomDomain: String? = ""
