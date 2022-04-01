@@ -20,7 +20,15 @@
 
 package com.github.wenzewoo.jetbrains.plugin.mis.design;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 
 @SuppressWarnings("rawtypes")
 public class MISConfigurationInterfaceForm {
@@ -82,4 +90,17 @@ public class MISConfigurationInterfaceForm {
     protected JComboBox comboMinioNewFilenameTemplate;
     protected JTextField textMinioNewFilenameCustomText;
     protected JButton buttonTestMinio;
+
+    // github config
+    protected JCheckBox checkGitHubEnable;
+    protected JTextField githubRepoName;
+    protected JTextField githubRepoBranch;
+    protected JTextField githubToken;
+    protected JTextField githubStoragePath;
+    protected JTextField githubCustomDomain;
+    protected JTextField textGitHubNewFilenameCustomText;
+    protected JComboBox comboGitHubNewFilenameTemplate;
+    protected JButton buttonTestGitHub;
+
+
 }

@@ -60,6 +60,16 @@ class MISConfig {
     var aliyunNewFilenameTemplate: String = ""
     var aliyunNewFilenameCustomText: String = ""
 
+    // GitHub
+    var gitHubEnabled: Boolean = false
+    var githubRepoName: String = "username/repo"
+    var githubRepoBranch: String = "master"
+    var githubToken: String = ""
+    var githubStoragePath: String = ""
+    var githubCustomDomain: String? = ""
+    var githubNewFilenameTemplate: String = ""
+    var githubNewFilenameCustomText: String = ""
+
     // minio
     var minioEnabled: Boolean = false
     var minioBucket: String = ""

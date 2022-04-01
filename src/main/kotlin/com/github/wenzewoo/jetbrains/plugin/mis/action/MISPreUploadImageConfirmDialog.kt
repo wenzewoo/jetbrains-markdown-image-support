@@ -80,6 +80,8 @@ class MISPreUploadImageConfirmDialog(
                 this.comboUploadTo.addItem(Consts.FileStoreAliyunOSS)
             if (it.minioEnabled)
                 this.comboUploadTo.addItem(Consts.FileStoreMinIO)
+            if (it.gitHubEnabled)
+                this.comboUploadTo.addItem(Consts.FileStoreGitHub)
             this.comboUploadTo.selectedItem = it.currentUploadTo
         }
 
@@ -142,12 +144,21 @@ class MISPreUploadImageConfirmDialog(
                         this.replaceVariable(it.aliyunNewFilenameCustomText)
                     }
                 }
-                // init aliyun oss
+                // init minio oss
                 Consts.FileStoreMinIO -> {
                     this.textSaveAs.text = if (it.minioNewFilenameTemplate != Consts.CustomFlag) {
                         this.replaceVariable(it.minioNewFilenameTemplate)
                     } else {
                         this.replaceVariable(it.minioNewFilenameCustomText)
+                    }
+                }
+
+                // init GitHub
+                Consts.FileStoreGitHub -> {
+                    this.textSaveAs.text = if (it.githubNewFilenameTemplate != Consts.CustomFlag) {
+                        this.replaceVariable(it.githubNewFilenameTemplate)
+                    } else {
+                        this.replaceVariable(it.githubNewFilenameCustomText)
                     }
                 }
             }
